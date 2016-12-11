@@ -26,6 +26,7 @@ svgtoipe_version = "20091018"
 
 import sys
 import argparse
+import logging
 import xml.dom.minidom as xml
 from xml.dom.minidom import Node
 from xml.parsers.expat import ExpatError
@@ -34,6 +35,10 @@ import math
 
 import base64
 import cStringIO
+
+logging.basicConfig(level=logging.WARN, format='%(message)s')
+#        format='%(funcName)s:%(message)s')
+LOG = logging.getLogger(name=__name__)
 
 try:
   from PIL import Image
@@ -74,14 +79,16 @@ attribute_names = [ "stroke",
                     "stroke-dashoffset",
                     "stroke-miterlimit",
                     "opacity",
-                    "font-size" ]
+                    "font-size",
+                    "marker-start",
+                    "marker-end"]
 
 def printAttributes(n):
   a = n.attributes
   for i in range(a.length):
     name = a.item(i).name
     if name[:9] != "sodipodi:" and name[:9] != "inkscape:":
-      print "   ", name, n.getAttribute(name)
+      LOG.warn("   %s %s", name, n.getAttribute(name))
 
 def parse_float(txt):
   if not txt:
@@ -398,14 +405,19 @@ class Svg():
         continue
       if hasattr(self, "def_" + n.tagName):
         getattr(self, "def_" + n.tagName)(n)
+
     # write definitions into stylesheet
+    LOG.debug('writing %d definitions',len(self.defs))
     if len(self.defs) > 0:
       self.out.write('<ipestyle>\n')
       for k in self.defs:
+        LOG.debug("  %s", k)
         if self.defs[k][0] == "linearGradient":
           self.write_linear_gradient(k)
         elif self.defs[k][0] == "radialGradient":
           self.write_radial_gradient(k)
+        elif self.defs[k][0] == "marker":
+          self.write_marker(k)
       self.out.write('</ipestyle>\n')
 
   def parse_svg(self, outname, **kwargs):
@@ -460,12 +472,12 @@ class Svg():
       if n.nodeType != Node.ELEMENT_NODE:
         continue
 
-      nodeName = "node_" + n.tagName.replace(":","_")
+      node_name = "node_" + n.tagName.replace(":","_")
 
-      if hasattr(self, nodeName):
-        getattr(self, nodeName)(n)
+      if hasattr(self, node_name):
+        getattr(self, node_name)(n)
       else:
-        sys.stderr.write("Unhandled node: %s\n" % n.tagName)
+        LOG.warn("Unhandled node: %s" % n.tagName)
 
 # --------------------------------------------------------------------
 
@@ -491,6 +503,16 @@ class Svg():
                      (offset, color[0], color[1], color[2]))
     self.out.write('</gradient>\n')
 
+  def write_marker(self, k):
+    typ, mid, node = self.defs[k]
+    attr = self.parse_attributes(node)
+    m = parse_transform(node) #needed here?
+    attr = self.parse_attributes(node)
+
+    self.out.write('<symbol name="arrow/%s" xform="yes">\n' % mid)
+    self.parse_nodes(node)
+    self.out.write('</symbol>\n')
+
   def get_stops(self, n):
     stops = []
     for m in n.childNodes:
@@ -515,7 +537,6 @@ class Svg():
         if ref.startswith("#") and ref[1:] in self.defs:
           stops = self.defs[ref[1:]][5]
     return stops
-
 
   def node_inkscape_clipboard(self, node):
     self.parse_nodes(node)
@@ -610,6 +631,10 @@ class Svg():
       self.defs[kid] = ("clipPath", m, path)
       return
 
+  def def_marker(self, node):
+    kid = node.getAttribute("id")
+    self.defs[kid] = ("marker", kid, node )
+
   def def_g(self, group):
     for n in group.childNodes:
       if n.nodeType != Node.ELEMENT_NODE:
@@ -619,6 +644,7 @@ class Svg():
 
   def def_defs(self, node):
     self.def_g(node)
+
 
 # --------------------------------------------------------------------
 
@@ -638,6 +664,7 @@ class Svg():
     return attr
 
   def write_pathattributes(self, a):
+
     stroke = parse_color(a["stroke"])
     if stroke:
       self.out.write(' stroke="%g %g %g"' % stroke)
@@ -680,10 +707,27 @@ class Svg():
       off = parse_float(dashoffset)
       self.out.write(' dash="[%s] %g"' % (" ".join(d), off))
 
+    if a["marker-start"] is not None: #format: url(#marker5324)
+      m = a["marker-start"]
+      r = re.match("url\(#(.*)\)", m)
+      if r is not None:
+        #FIXME figure out real arrow format
+        self.out.write(' arror="normal/normal"')#% r.groups()[0])
+
+    if a["marker-end"] is not None:
+      m = a["marker-end"]
+      r = re.match("url\(#(.*)\)", m)
+      if r is not None:
+        #FIXME figure out real arrow format
+        self.out.write(' rarror="normal/normal"')#% r.group()[0])
 # --------------------------------------------------------------------
 
+  def node_defs(self, group):
+    #handled in def_defs()
+    pass
+
   def node_g(self, group):
-    # printAttributes(group)
+    #printAttributes(group)
     attr = self.parse_attributes(group)
     self.attributes.append(attr)
     self.out.write('<group')
@@ -897,13 +941,17 @@ class Svg():
 def parse_arguments():
     """ parses command line arguments"""
     parser = argparse.ArgumentParser(
-            description="convert SVG into IPE files",
-            epilog="""
-              Supported SVG elements:
-                  path,image,rect,circle,ellipse,line,polygon,polyline
-              Supported SVG attributes:
-                  group, clipPath,linearGradient,radialGradient
-              """)
+        description="convert SVG into IPE files",
+        epilog="""
+          Supported SVG elements:
+              path,image,rect,circle,ellipse,line,polygon,polyline
+          Supported SVG attributes:
+              group, clipPath,linearGradient,radialGradient
+          """)
+
+    parser.add_argument('-v', '--verbosity', type=int, default=0,
+        help="""verbose output
+             """)
 
     parser.add_argument('-c', '--clipboard', dest='clipboard',
         action='store_true',
@@ -937,6 +985,10 @@ def parse_arguments():
     if args.outfile is None:
       if args.infile != "--":
         args.outfile = args.infile[:-4] + ".ipe"
+    if args.verbosity >= 2:
+        LOG.setLevel(logging.DEBUG)
+    elif args.verbosity >= 1:
+        LOG.setLevel(logging.INFO)
 
     return args
     #except Exception as exc:
