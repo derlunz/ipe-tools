@@ -90,186 +90,6 @@ attribute_names = [ "stroke",
 # contains a straight copy of basic.isy
 BASIC_STYLESHEET = """
 <ipestyle name="basic">
-<symbol name="arrow/arc(spx)">
-<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
-0 0 m
--1 0.333 l
--1 -0.333 l
-h
-</path>
-</symbol>
-<symbol name="arrow/farc(spx)">
-<path stroke="sym-stroke" fill="white" pen="sym-pen">
-0 0 m
--1 0.333 l
--1 -0.333 l
-h
-</path>
-</symbol>
-<symbol name="arrow/ptarc(spx)">
-<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
-0 0 m
--1 0.333 l
--0.8 0 l
--1 -0.333 l
-h
-</path>
-</symbol>
-<symbol name="arrow/fptarc(spx)">
-<path stroke="sym-stroke" fill="white" pen="sym-pen">
-0 0 m
--1 0.333 l
--0.8 0 l
--1 -0.333 l
-h
-</path>
-</symbol>
-<symbol name="mark/circle(sx)" transformations="translations">
-<path fill="sym-stroke">
-0.6 0 0 0.6 0 0 e
-0.4 0 0 0.4 0 0 e
-</path>
-</symbol>
-<symbol name="mark/disk(sx)" transformations="translations">
-<path fill="sym-stroke">
-0.6 0 0 0.6 0 0 e
-</path>
-</symbol>
-<symbol name="mark/fdisk(sfx)" transformations="translations">
-<group>
-<path fill="sym-fill">
-0.5 0 0 0.5 0 0 e
-</path>
-<path fill="sym-stroke" fillrule="eofill">
-0.6 0 0 0.6 0 0 e
-0.4 0 0 0.4 0 0 e
-</path>
-</group>
-</symbol>
-<symbol name="mark/box(sx)" transformations="translations">
-<path fill="sym-stroke" fillrule="eofill">
--0.6 -0.6 m
-0.6 -0.6 l
-0.6 0.6 l
--0.6 0.6 l
-h
--0.4 -0.4 m
-0.4 -0.4 l
-0.4 0.4 l
--0.4 0.4 l
-h
-</path>
-</symbol>
-<symbol name="mark/square(sx)" transformations="translations">
-<path fill="sym-stroke">
--0.6 -0.6 m
-0.6 -0.6 l
-0.6 0.6 l
--0.6 0.6 l
-h
-</path>
-</symbol>
-<symbol name="mark/fsquare(sfx)" transformations="translations">
-<group>
-<path fill="sym-fill">
--0.5 -0.5 m
-0.5 -0.5 l
-0.5 0.5 l
--0.5 0.5 l
-h
-</path>
-<path fill="sym-stroke" fillrule="eofill">
--0.6 -0.6 m
-0.6 -0.6 l
-0.6 0.6 l
--0.6 0.6 l
-h
--0.4 -0.4 m
-0.4 -0.4 l
-0.4 0.4 l
--0.4 0.4 l
-h
-</path>
-</group>
-</symbol>
-<symbol name="mark/cross(sx)" transformations="translations">
-<group>
-<path fill="sym-stroke">
--0.43 -0.57 m
-0.57 0.43 l
-0.43 0.57 l
--0.57 -0.43 l
-h
-</path>
-<path fill="sym-stroke">
--0.43 0.57 m
-0.57 -0.43 l
-0.43 -0.57 l
--0.57 0.43 l
-h
-</path>
-</group>
-</symbol>
-<symbol name="arrow/fnormal(spx)">
-<path stroke="sym-stroke" fill="white" pen="sym-pen">
-0 0 m
--1 0.333 l
--1 -0.333 l
-h
-</path>
-</symbol>
-<symbol name="arrow/pointed(spx)">
-<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
-0 0 m
--1 0.333 l
--0.8 0 l
--1 -0.333 l
-h
-</path>
-</symbol>
-<symbol name="arrow/fpointed(spx)">
-<path stroke="sym-stroke" fill="white" pen="sym-pen">
-0 0 m
--1 0.333 l
--0.8 0 l
--1 -0.333 l
-h
-</path>
-</symbol>
-<symbol name="arrow/linear(spx)">
-<path stroke="sym-stroke" pen="sym-pen">
--1 0.333 m
-0 0 l
--1 -0.333 l
-</path>
-</symbol>
-<symbol name="arrow/fdouble(spx)">
-<path stroke="sym-stroke" fill="white" pen="sym-pen">
-0 0 m
--1 0.333 l
--1 -0.333 l
-h
--1 0 m
--2 0.333 l
--2 -0.333 l
-h
-</path>
-</symbol>
-<symbol name="arrow/double(spx)">
-<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
-0 0 m
--1 0.333 l
--1 -0.333 l
-h
--1 0 m
--2 0.333 l
--2 -0.333 l
-h
-</path>
-</symbol>
-<pen name="heavier" value="0.8"/>
-<pen name="fat" value="1.2"/>
-<pen name="ultrafat" value="2"/>
 <symbolsize name="large" value="5"/>
 <symbolsize name="small" value="2"/>
 <symbolsize name="tiny" value="1.1"/>
@@ -302,35 +122,6 @@ h
 <color name="lightgray" value="0.827"/>
 <color name="lightgreen" value="0.565 0.933 0.565"/>
 <color name="lightyellow" value="1 1 0.878"/>
-<dashstyle name="dashed" value="[4] 0"/>
-<dashstyle name="dotted" value="[1 3] 0"/>
-<dashstyle name="dash dotted" value="[4 2 1 2] 0"/>
-<dashstyle name="dash dot dotted" value="[4 2 1 2 1 2] 0"/>
-<textsize name="large" value="\large"/>
-<textsize name="Large" value="\Large"/>
-<textsize name="LARGE" value="\LARGE"/>
-<textsize name="huge" value="\huge"/>
-<textsize name="Huge" value="\Huge"/>
-<textsize name="small" value="\small"/>
-<textsize name="footnote" value="\footnotesize"/>
-<textsize name="tiny" value="\tiny"/>
-<textstyle name="center" begin="\begin{center}" end="\end{center}"/>
-<textstyle name="itemize" begin="\begin{itemize}" end="\end{itemize}"/>
-<textstyle name="item" begin="\begin{itemize}\item{}" end="\end{itemize}"/>
-<gridsize name="4 pts" value="4"/>
-<gridsize name="8 pts (~3 mm)" value="8"/>
-<gridsize name="16 pts (~6 mm)" value="16"/>
-<gridsize name="32 pts (~12 mm)" value="32"/>
-<gridsize name="10 pts (~3.5 mm)" value="10"/>
-<gridsize name="20 pts (~7 mm)" value="20"/>
-<gridsize name="14 pts (~5 mm)" value="14"/>
-<gridsize name="28 pts (~10 mm)" value="28"/>
-<gridsize name="56 pts (~20 mm)" value="56"/>
-<anglesize name="90 deg" value="90"/>
-<anglesize name="60 deg" value="60"/>
-<anglesize name="45 deg" value="45"/>
-<anglesize name="30 deg" value="30"/>
-<anglesize name="22.5 deg" value="22.5"/>
 <opacity name="10%" value="0.10"/>
 <opacity name="20%" value="0.20"/>
 <opacity name="30%" value="0.30"/>
@@ -426,87 +217,190 @@ def pnext(d, n):
     n -= 1
   return tuple(l)
 
-def parse_path(out, d):
+
+def get_ipe_path_abs_max(path_desc):
+  path_min = 0
+  path_max = 0
+  path_scale = 1.0
+  #find minimum and maximum absolute values
+  for path_op in path_desc:
+      op = path_op[0]
+      params = path_op[1:]
+      if op == 'h':
+          continue
+      elif op == 'a':
+          LOG.warn("dropping arc while scaling") #FIXME
+          continue
+      else:
+        #FIXME we just want to find the scale value
+        LOG.debug(path_op)
+        op_min = min(list(params))
+        if op_min < path_min:
+            path_min = op_min
+        op_max = max(list(params))
+        if op_max > path_max:
+            path_max = op_max
+        path_scale = max(path_scale, max(abs(path_max), abs(path_min)))
+  #LOG.debug("min/max/path_scale %g/%g/%g"%(path_min,path_max,path_scale))
+  return path_scale
+
+def path_scale_to_unit_size(path_desc):
+  scaled_path = []
+
+  path_scale = get_ipe_path_abs_max(path_desc)
+  for op_i, path_op in enumerate(path_desc):
+      op = path_op[0]
+      params = path_op[1:]
+      if op == 'h':
+          continue
+      elif op == 'a':
+          LOG.warn("dropping arc") #FIXME
+          continue
+      else:
+          # just scale all values, and hope for the best
+          params = [ 1./path_scale * p for p in list(params)]
+          path_desc[op_i] = tuple([op] + params)
+  return path_desc
+
+def write_ipe_path(out, path_desc):
+  # write ipe path data as formated ipe path to out stream
+  for path_op in path_desc:
+      op = path_op[0]
+      pars = path_op[1:]
+      npars = len(pars)
+      LOG.debug("op: %s params: %s "%(op, pars))
+
+      if op == 'h':
+        out.write("h\n")
+      elif op == 'a': # arcs carry a matrix argument.
+        out.write("%s %g %g a\n" % (str(pars[0]), pars[1], pars[2]))
+      else:
+        # assuming all other parameters are double
+        param_fmt = "%g " * npars + "%s\n" %op
+        out.write(param_fmt % pars)
+
+def parse_path_ops(d, **kwargs):
+  """ parse svg path data and writes parsed ipe path representation to output.
+
+      d, str, path data of a svg path element.
+              c.f. https://www.w3.org/TR/2003/REC-SVG11-20030114/paths.html#PathData
+  """
+  path_desc = []
   d = re.findall("([A-Za-z]|-?[0-9]+\.?[0-9]*(?:e-?[0-9]*)?)", d)
   x, y = 0.0, 0.0
   xs, ys = 0.0, 0.0
+
+  do_unit_scale = kwargs.get('scale_to_unit_size', False)
+
+  #first parse svg path
   while d:
     if not d[0][0] in "01234567890.-":
       opcode = d.pop(0)
     if opcode == 'M':
       x, y = pnext(d, 2)
-      out.write("%g %g m\n" % (x, y))
+      #out.write("%g %g m\n" % (x, y))
+      path_desc += [('m', x, y)]
       opcode = 'L'
     elif opcode == 'm':
       x1, y1 = pnext(d, 2)
       x += x1
       y += y1
-      out.write("%g %g m\n" % (x, y))
+      #out.write("%g %g m\n" % (x, y))
+      path_desc += [('m', x, y)]
       opcode = 'l'
     elif opcode == 'L':
       x, y = pnext(d, 2)
-      out.write("%g %g l\n" % (x, y))
+      #out.write("%g %g l\n" % (x, y))
+      path_desc += [('l', x, y)]
     elif opcode == 'l':
       x1, y1 = pnext(d, 2)
       x += x1
       y += y1
-      out.write("%g %g l\n" % (x, y))
+      #out.write("%g %g l\n" % (x, y))
+      path_desc += [('l', x, y)]
     elif opcode == 'H':
       x = pnext(d, 1)[0]
-      out.write("%g %g l\n" % (x, y))
+      #out.write("%g %g l\n" % (x, y))
+      path_desc += [('l', x, y)]
     elif opcode == 'h':
       x += pnext(d, 1)[0]
-      out.write("%g %g l\n" % (x, y))
+      #out.write("%g %g l\n" % (x, y))
+      path_desc += [('l', x, y)]
     elif opcode == 'V':
       y = pnext(d, 1)[0]
-      out.write("%g %g l\n" % (x, y))
+      #out.write("%g %g l\n" % (x, y))
+      path_desc += [('l', x, y)]
     elif opcode == 'v':
       y += pnext(d, 1)[0]
-      out.write("%g %g l\n" % (x, y))
+      #out.write("%g %g l\n" % (x, y))
+      path_desc += [('l', x, y)]
     elif opcode == 'C':
       x1, y1, xs, ys, x, y = pnext(d, 6)
-      out.write("%g %g %g %g %g %g c\n" % (x1, y1, xs, ys, x, y))
+      #out.write("%g %g %g %g %g %g c\n" % (x1, y1, xs, ys, x, y))
+      path_desc += [('c', x1, y1, xs, ys, x, y)]
     elif opcode == 'c':
       x1, y1, xs, ys, xf, yf = pnext(d, 6)
       x1 += x; y1 += y
       xs += x; ys += y
       x += xf; y += yf
-      out.write("%g %g %g %g %g %g c\n" % (x1, y1, xs, ys, x, y))
+      #out.write("%g %g %g %g %g %g c\n" % (x1, y1, xs, ys, x, y))
+      path_desc += [('c', x1, y1, xs, ys, x, y)]
     elif opcode == 'S' or opcode == 's':
       x2, y2, xf, yf = pnext(d, 4)
       if opcode == 's':
         x2 += x; y2 += y
         xf += x; yf += y
       x1 = x + (x - xs); y1 = y + (y - ys)
-      out.write("%g %g %g %g %g %g c\n" % (x1, y1, x2, y2, xf, yf))
+      #out.write("%g %g %g %g %g %g c\n" % (x1, y1, x2, y2, xf, yf))
+      path_desc += [('c', x1, y1, x1, y2, xf, yf)]
       xs, ys = x2, y2
       x, y = xf, yf
     elif opcode == 'Q':
       xs, ys, x, y = pnext(d, 4)
       out.write("%g %g %g %g q\n" % (xs, ys, x, y))
+      path_desc += [('q', xs, ys, x, y)]
     elif opcode == 'q':
       xs, ys, xf, yf = pnext(d, 4)
       xs += x; ys += y
       x += xf; y += yf
-      out.write("%g %g %g %g q\n" % (xs, ys, x, y))
+      #out.write("%g %g %g %g q\n" % (xs, ys, x, y))
+      path_desc += [('q', xs, ys, x, y)]
     elif opcode == 'T' or opcode == 't':
       xf, yf = pnext(d, 2)
       if opcode == 't':
         xf += x; yf += y
       x1 = x + (x - xs); y1 = y + (y - ys)
-      out.write("%g %g %g %g q\n" % (x1, y1, xf, yf))
+      #out.write("%g %g %g %g q\n" % (x1, y1, xf, yf))
+      path_desc += [('q', x1, y1, xf, yf)]
       xs, ys = x1, y1
       x, y = xf, yf
     elif opcode == 'A' or opcode == 'a':
       rx, ry, phi, large_arc, sweep, x2, y2 = pnext(d, 7)
       if opcode == 'a':
         x2 += x; y2 += y
-      draw_arc(out, x, y, rx, ry, phi, large_arc, sweep, x2, y2)
+      m, xa, ya = draw_arc(out, x, y, rx, ry, phi, large_arc, sweep, x2, y2)
+      #out.write("%s %g %g a\n" % (str(m), xa, ya))
+      path_desc += [('a', m, xa, ya)]
       x, y = x2, y2
     elif opcode in 'zZ':
-      out.write("h\n")
+      path_desc += [('h')]
+      #out.write("h\n")
     else:
       sys.stderr.write("Unrecognised opcode: %s\n" % opcode)
+  return path_desc
+
+
+def parse_path(out, d, **kwargs):
+  """ parse svg path data and writes parsed ipe path representation to output.
+
+      d, str, path data of a svg path element.
+              c.f. https://www.w3.org/TR/2003/REC-SVG11-20030114/paths.html#PathData
+  """
+  ipe_path_ops = parse_path_ops(d, **kwargs)
+
+  write_ipe_path(out, ipe_path_ops)
+
+
 
 def parse_transformation(txt):
   d = re.findall("[a-zA-Z]+\([^)]*\)", txt)
@@ -546,7 +440,7 @@ def draw_arc(out, x1, y1, rx, ry, phi, large_arc, sweep, x2, y2):
   m = Matrix([cp, sp, -sp, cp, cx, cy]) * m
   if sweep == 0:
     m = m * Matrix([1, 0, 0, -1, 0, 0])
-  out.write("%s %g %g a\n" % (str(m), x2, y2))
+  return m, x2, y2
 
 # --------------------------------------------------------------------
 
@@ -602,9 +496,17 @@ class Matrix(object):
 
   def __mul__(self, other):
     a, b, c, d, e, f = self.values
-    u, v, w, x, y, z = other.values
-    return Matrix([a*u + c*v, b*u + d*v, a*w + c*x,
-                   b*w + d*x, a*y + c*z + e, b*y + d*z + f])
+    if isinstance(other, Matrix):
+        u, v, w, x, y, z = other.values
+        return Matrix([a*u + c*v, b*u + d*v, a*w + c*x,
+                       b*w + d*x, a*y + c*z + e, b*y + d*z + f])
+    elif isinstance(other, float) or isinstance(other, double) or \
+         isinstance(other, int):
+        s = other
+        LOG.debug("Matrix mul %s x %g"%(self, s))
+        return Matrix([a*s, b*s, c*s, d*s, e*s, f*s])
+    else:
+        raise NotImplemented('matrix mul for type %s'%type(other))
 
   def __str__(self):
     a, b, c, d, e, f = self.values
@@ -754,7 +656,7 @@ class Svg():
     self.parse_nodes(self.root)
     self.out.write('</group>\n')
 
-  def parse_nodes(self, root):
+  def parse_nodes(self, root, **kwargs):
     """ parses recognized svg elements """
     for n in root.childNodes:
       if n.nodeType != Node.ELEMENT_NODE:
@@ -763,7 +665,7 @@ class Svg():
       node_name = "node_" + n.tagName.replace(":","_")
 
       if hasattr(self, node_name):
-        getattr(self, node_name)(n)
+        getattr(self, node_name)(n, **kwargs)
       else:
         LOG.warn("Unhandled node: %s" % n.tagName)
 
@@ -798,7 +700,7 @@ class Svg():
     attr = self.parse_attributes(node)
 
     self.out.write('<symbol name="arrow/%s(spx)">\n' % mid)
-    self.parse_nodes(node)
+    self.parse_nodes(node, scale_to_unit_size=True)
     self.out.write('</symbol>\n')
 
   def get_stops(self, n):
@@ -1005,11 +907,11 @@ class Svg():
         self.out.write(' rarrow="%s/normal"'% r.groups()[0])
 # --------------------------------------------------------------------
 
-  def node_defs(self, group):
+  def node_defs(self, group, **kwargs):
     #handled in def_defs()
     pass
 
-  def node_g(self, group):
+  def node_g(self, group, **kwargs):
     #printAttributes(group)
     attr = self.parse_attributes(group)
     self.attributes.append(attr)
@@ -1031,7 +933,7 @@ class Svg():
       if n.tagName == "tspan":  # recurse
         self.collect_text(n)
 
-  def node_text(self, t):
+  def node_text(self, t, **kwargs):
     if not t.hasAttribute("x") or not t.hasAttribute("y"):
       sys.stderr.write("Text without coordinates ignored\n")
       return
@@ -1053,7 +955,7 @@ class Svg():
     self.collect_text(t)
     self.out.write('>%s</text>\n' % self.text.encode("UTF-8"))
 
-  def node_image(self, node):
+  def node_image(self, node, **kwargs):
     if not have_pil:
       sys.stderr.write("No Python image library, <image> ignored\n")
       return
@@ -1107,13 +1009,13 @@ class Svg():
       self.out.write('</group>\n</group>\n')
 
   # handled in def pass
-  def node_linearGradient(self, n):
+  def node_linearGradient(self, n, **kwargs):
     pass
 
-  def node_radialGradient(self, n):
+  def node_radialGradient(self, n, **kwargs):
     pass
 
-  def node_rect(self, n):
+  def node_rect(self, n, **kwargs):
     attr = self.parse_attributes(n)
     self.out.write('<path')
     m = parse_transform(n)
@@ -1129,7 +1031,7 @@ class Svg():
                    (x, y, x + w, y, x + w, y + h, x, y + h))
     self.out.write('</path>\n')
 
-  def node_circle(self, n):
+  def node_circle(self, n, **kwargs):
     self.out.write('<path')
     m = parse_transform(n)
     if m:
@@ -1143,7 +1045,7 @@ class Svg():
     self.out.write("%g 0 0 %g %g %g e\n" % (r, r, cx, cy))
     self.out.write('</path>\n')
 
-  def node_ellipse(self, n):
+  def node_ellipse(self, n, **kwargs):
     self.out.write('<path')
     m = parse_transform(n)
     if m:
@@ -1162,7 +1064,7 @@ class Svg():
     self.out.write("%g 0 0 %g %g %g e\n" % (rx, ry, cx, cy))
     self.out.write('</path>\n')
 
-  def node_line(self, n):
+  def node_line(self, n, **kwargs):
     self.out.write('<path')
     m = parse_transform(n)
     if m:
@@ -1182,10 +1084,10 @@ class Svg():
     self.out.write("%g %g m %g %g l\n" % (x1, y1, x2, y2))
     self.out.write('</path>\n')
 
-  def node_polyline(self, n):
+  def node_polyline(self, n, **kwargs):
     self.polygon(n, closed=False)
 
-  def node_polygon(self, n):
+  def node_polygon(self, n, **kwargs):
     self.polygon(n, closed=True)
 
   def polygon(self, n, closed):
@@ -1207,16 +1109,40 @@ class Svg():
       self.out.write("h\n")
     self.out.write('</path>\n')
 
-  def node_path(self, n):
-    self.out.write('<path')
+  def node_path(self, n,  **kwargs):
+    do_scale = kwargs.get('scale_to_unit_size', False)
     m = parse_transform(n)
+    d = n.getAttribute("d")
+
+    ipe_path_ops = parse_path_ops(d)
+    if do_scale: #adjusting size for imported symbols
+      path_scale = get_ipe_path_abs_max(ipe_path_ops)
+      LOG.debug("path_max: %g"%(path_scale))
+      ipe_path_ops = path_scale_to_unit_size(ipe_path_ops)
+      if m:
+        # FIXME transformation scaling
+        sc_x = m.values[0]
+        sc_y = m.values[3]
+        t_x = m.values[4]
+        t_y = m.values[5]
+        LOG.debug("matrix before: %s, scale:%g"%(m,sc_x))
+        #m = None
+        #m = m * (1 /path_scale)
+        #m = m.inverse()
+        #m = m * Matrix([1 /sc_x, 0, 0, 1 /sc_y, t_x * 1/sc_x , 1/sc_y])
+        m = m * Matrix([1 /path_scale, 0, 0, 1 /path_scale, 0, 0])
+        #m = m * Matrix([1 /sc_x, 0, 0, 1 /sc_y, t_x * 1/sc_x , t_y * 1/sc_y])
+        #if mat_scale != 0:
+            #m = m * (1.0 /mat_scale)
+        LOG.debug("matrix after %s",m)
+
+    self.out.write('<path')
     if m:
       self.out.write(' matrix="%s"' % m)
     attr = self.parse_attributes(n)
     self.write_pathattributes(attr)
     self.out.write('>\n')
-    d = n.getAttribute("d")
-    parse_path(self.out, d)
+    write_ipe_path(self.out, ipe_path_ops)
     self.out.write('</path>\n')
 
 # --------------------------------------------------------------------
