@@ -22,10 +22,12 @@
 #
 # --------------------------------------------------------------------
 
-svgtoipe_version = "20091018"
+SVGTOIPE_VERSION = "20161210"
+IPE_FILE_VERSION = "70206"
 
 import sys
 import argparse
+import time
 import logging
 import xml.dom.minidom as xml
 from xml.dom.minidom import Node
@@ -82,6 +84,266 @@ attribute_names = [ "stroke",
                     "font-size",
                     "marker-start",
                     "marker-end"]
+
+# FIXME: Including basic style here, so we don't have to mess with lookup of
+# basic style template file location.
+# contains a straight copy of basic.isy
+BASIC_STYLESHEET = """
+<ipestyle name="basic">
+<symbol name="arrow/arc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/farc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/ptarc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fptarc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="mark/circle(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</symbol>
+<symbol name="mark/disk(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+</path>
+</symbol>
+<symbol name="mark/fdisk(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+0.5 0 0 0.5 0 0 e
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</group>
+</symbol>
+<symbol name="mark/box(sx)" transformations="translations">
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+h
+</path>
+</symbol>
+<symbol name="mark/square(sx)" transformations="translations">
+<path fill="sym-stroke">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+</path>
+</symbol>
+<symbol name="mark/fsquare(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+-0.5 -0.5 m
+0.5 -0.5 l
+0.5 0.5 l
+-0.5 0.5 l
+h
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="mark/cross(sx)" transformations="translations">
+<group>
+<path fill="sym-stroke">
+-0.43 -0.57 m
+0.57 0.43 l
+0.43 0.57 l
+-0.57 -0.43 l
+h
+</path>
+<path fill="sym-stroke">
+-0.43 0.57 m
+0.57 -0.43 l
+0.43 -0.57 l
+-0.57 0.43 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="arrow/fnormal(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/pointed(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fpointed(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/linear(spx)">
+<path stroke="sym-stroke" pen="sym-pen">
+-1 0.333 m
+0 0 l
+-1 -0.333 l
+</path>
+</symbol>
+<symbol name="arrow/fdouble(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/double(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+h
+</path>
+</symbol>
+<pen name="heavier" value="0.8"/>
+<pen name="fat" value="1.2"/>
+<pen name="ultrafat" value="2"/>
+<symbolsize name="large" value="5"/>
+<symbolsize name="small" value="2"/>
+<symbolsize name="tiny" value="1.1"/>
+<arrowsize name="large" value="10"/>
+<arrowsize name="small" value="5"/>
+<arrowsize name="tiny" value="3"/>
+<color name="red" value="1 0 0"/>
+<color name="green" value="0 1 0"/>
+<color name="blue" value="0 0 1"/>
+<color name="yellow" value="1 1 0"/>
+<color name="orange" value="1 0.647 0"/>
+<color name="gold" value="1 0.843 0"/>
+<color name="purple" value="0.627 0.125 0.941"/>
+<color name="gray" value="0.745"/>
+<color name="brown" value="0.647 0.165 0.165"/>
+<color name="navy" value="0 0 0.502"/>
+<color name="pink" value="1 0.753 0.796"/>
+<color name="seagreen" value="0.18 0.545 0.341"/>
+<color name="turquoise" value="0.251 0.878 0.816"/>
+<color name="violet" value="0.933 0.51 0.933"/>
+<color name="darkblue" value="0 0 0.545"/>
+<color name="darkcyan" value="0 0.545 0.545"/>
+<color name="darkgray" value="0.663"/>
+<color name="darkgreen" value="0 0.392 0"/>
+<color name="darkmagenta" value="0.545 0 0.545"/>
+<color name="darkorange" value="1 0.549 0"/>
+<color name="darkred" value="0.545 0 0"/>
+<color name="lightblue" value="0.678 0.847 0.902"/>
+<color name="lightcyan" value="0.878 1 1"/>
+<color name="lightgray" value="0.827"/>
+<color name="lightgreen" value="0.565 0.933 0.565"/>
+<color name="lightyellow" value="1 1 0.878"/>
+<dashstyle name="dashed" value="[4] 0"/>
+<dashstyle name="dotted" value="[1 3] 0"/>
+<dashstyle name="dash dotted" value="[4 2 1 2] 0"/>
+<dashstyle name="dash dot dotted" value="[4 2 1 2 1 2] 0"/>
+<textsize name="large" value="\large"/>
+<textsize name="Large" value="\Large"/>
+<textsize name="LARGE" value="\LARGE"/>
+<textsize name="huge" value="\huge"/>
+<textsize name="Huge" value="\Huge"/>
+<textsize name="small" value="\small"/>
+<textsize name="footnote" value="\footnotesize"/>
+<textsize name="tiny" value="\tiny"/>
+<textstyle name="center" begin="\begin{center}" end="\end{center}"/>
+<textstyle name="itemize" begin="\begin{itemize}" end="\end{itemize}"/>
+<textstyle name="item" begin="\begin{itemize}\item{}" end="\end{itemize}"/>
+<gridsize name="4 pts" value="4"/>
+<gridsize name="8 pts (~3 mm)" value="8"/>
+<gridsize name="16 pts (~6 mm)" value="16"/>
+<gridsize name="32 pts (~12 mm)" value="32"/>
+<gridsize name="10 pts (~3.5 mm)" value="10"/>
+<gridsize name="20 pts (~7 mm)" value="20"/>
+<gridsize name="14 pts (~5 mm)" value="14"/>
+<gridsize name="28 pts (~10 mm)" value="28"/>
+<gridsize name="56 pts (~20 mm)" value="56"/>
+<anglesize name="90 deg" value="90"/>
+<anglesize name="60 deg" value="60"/>
+<anglesize name="45 deg" value="45"/>
+<anglesize name="30 deg" value="30"/>
+<anglesize name="22.5 deg" value="22.5"/>
+<opacity name="10%" value="0.10"/>
+<opacity name="20%" value="0.20"/>
+<opacity name="30%" value="0.30"/>
+<opacity name="40%" value="0.40"/>
+<opacity name="50%" value="0.50"/>
+<opacity name="60%" value="0.60"/>
+<opacity name="70%" value="0.70"/>
+<opacity name="80%" value="0.80"/>
+<opacity name="90%" value="0.90"/>
+<tiling name="falling" angle="-60" step="4" width="1"/>
+<tiling name="rising" angle="30" step="4" width="1"/>
+</ipestyle>
+"""
 
 def printAttributes(n):
   a = n.attributes
@@ -385,20 +647,7 @@ class Svg():
 
 # --------------------------------------------------------------------
 
-  def write_ipe_header(self):
-    self.out.write('<?xml version="1.0"?>\n')
-    self.out.write('<!DOCTYPE ipe SYSTEM "ipe.dtd">\n')
-    self.out.write('<ipe version="70005" creator="svgtoipe %s">\n' %
-                   svgtoipe_version)
-    self.out.write('<ipestyle>\n')
-    self.out.write(('<layout paper="%d %d" frame="%d %d" ' +
-                    'origin="0 0" crop="no"/>\n') %
-                   (self.width, self.height, self.width, self.height))
-    for t in range(10, 100, 10):
-      self.out.write('<opacity name="%d%%" value="0.%d"/>\n' % (t, t))
-    # set SVG defaults
-    self.out.write('<pathstyle cap="0" join="0" fillrule="wind"/>\n')
-    self.out.write('</ipestyle>\n')
+  def parse_svg_definitions(self):
     # collect definitions
     for n in self.root.childNodes:
       if n.nodeType != Node.ELEMENT_NODE:
@@ -406,10 +655,11 @@ class Svg():
       if hasattr(self, "def_" + n.tagName):
         getattr(self, "def_" + n.tagName)(n)
 
+  def write_ipe_definitions(self):
     # write definitions into stylesheet
     LOG.debug('writing %d definitions',len(self.defs))
     if len(self.defs) > 0:
-      self.out.write('<ipestyle>\n')
+      self.out.write('<ipestyle name="imported-svg-styles">\n')
       for k in self.defs:
         LOG.debug("  %s", k)
         if self.defs[k][0] == "linearGradient":
@@ -419,6 +669,43 @@ class Svg():
         elif self.defs[k][0] == "marker":
           self.write_marker(k)
       self.out.write('</ipestyle>\n')
+
+  def write_ipe_header(self):
+    self.out.write('<?xml version="1.0"?>\n')
+    self.out.write('<!DOCTYPE ipe SYSTEM "ipe.dtd">\n')
+    self.out.write('<ipe version="%s" creator="svgtoipe %s">\n' %
+                   (IPE_FILE_VERSION, SVGTOIPE_VERSION))
+    self.write_ipe_metadata()
+    self.write_ipe_basic_style()
+    self.parse_svg_definitions()
+    self.write_ipe_definitions()
+
+
+  def write_ipe_metadata(self):
+    time_created="%s"% time.strftime("%Y%m%d%H%m%S",time.localtime())
+    title="Ipe-arrow"
+    author="Christian Kapeller"
+    subject="A Subject"
+    keywords="and, some, keywords"
+    info_tag = '<info created="D:%s" modified="D:%s" ' + \
+               'title="%s" author="%s" subject="%s" keywords="%s"/>\n'
+    self.out.write(info_tag % (time_created, time_created, title, author,
+                               subject, keywords))
+
+  def write_ipe_basic_style(self):
+
+    self.out.write(BASIC_STYLESHEET)
+
+    self.out.write('<ipestyle name="paperformat">\n')
+    self.out.write(('<layout paper="%d %d" frame="%d %d" ' +
+                    'origin="0 0" crop="no"/>\n') %
+                   (self.width, self.height, self.width, self.height))
+    self.out.write('</ipestyle>\n')
+
+    # set SVG defaults
+    self.out.write('<ipestyle name="svg-defaults">\n')
+    self.out.write('<pathstyle cap="0" join="0" fillrule="wind"/>\n')
+    self.out.write('</ipestyle>\n')
 
   def parse_svg(self, outname, **kwargs):
     """ parses the svg, and writes it to file.
@@ -435,8 +722,9 @@ class Svg():
       self.out = sys.stdout
     else:
       self.out = open(outname, "w")
-      # write header
 
+
+    # write header
     if outmode == 'file':
       self.write_ipe_header()
       self.out.write('<page>\n')
@@ -509,7 +797,7 @@ class Svg():
     m = parse_transform(node) #needed here?
     attr = self.parse_attributes(node)
 
-    self.out.write('<symbol name="arrow/%s" xform="yes">\n' % mid)
+    self.out.write('<symbol name="arrow/%s(spx)">\n' % mid)
     self.parse_nodes(node)
     self.out.write('</symbol>\n')
 
@@ -645,7 +933,6 @@ class Svg():
   def def_defs(self, node):
     self.def_g(node)
 
-
 # --------------------------------------------------------------------
 
   def parse_attributes(self, n):
@@ -706,20 +993,16 @@ class Svg():
       d = parse_list(dasharray)
       off = parse_float(dashoffset)
       self.out.write(' dash="[%s] %g"' % (" ".join(d), off))
-
     if a["marker-start"] is not None: #format: url(#marker5324)
       m = a["marker-start"]
       r = re.match("url\(#(.*)\)", m)
       if r is not None:
-        #FIXME figure out real arrow format
-        self.out.write(' arror="normal/normal"')#% r.groups()[0])
-
+        self.out.write(' arrow="%s/normal"'% r.groups()[0])
     if a["marker-end"] is not None:
       m = a["marker-end"]
       r = re.match("url\(#(.*)\)", m)
       if r is not None:
-        #FIXME figure out real arrow format
-        self.out.write(' rarror="normal/normal"')#% r.group()[0])
+        self.out.write(' rarrow="%s/normal"'% r.groups()[0])
 # --------------------------------------------------------------------
 
   def node_defs(self, group):
@@ -980,7 +1263,6 @@ def parse_arguments():
         clipboard=False,
     )
 
-    #try:
     args = parser.parse_args()
     if args.outfile is None:
       if args.infile != "--":
@@ -994,9 +1276,6 @@ def parse_arguments():
         LOG.setLevel(logging.INFO)
 
     return args
-    #except Exception as exc:
-        #sys.stderr.write("parsing error:\n")
-        #sys.exit(1)
 
 def main():
   args = parse_arguments()
