@@ -963,7 +963,8 @@ def parse_arguments():
         paste clipboard content into ipe.
         """)
 
-    parser.add_argument('infile', metavar='svg-file.svg',
+
+    parser.add_argument('infile', metavar='svg-file.svg', nargs='?',
             help="input file in svg format. If infile = '--' svg data is read"+\
                  "from stdin")
 
@@ -981,10 +982,12 @@ def parse_arguments():
 
     #try:
     args = parser.parse_args()
-    print args.infile
     if args.outfile is None:
       if args.infile != "--":
         args.outfile = args.infile[:-4] + ".ipe"
+      if args.infile == "--":
+        args.outfile = "--"
+
     if args.verbosity >= 2:
         LOG.setLevel(logging.DEBUG)
     elif args.verbosity >= 1:
